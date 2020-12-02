@@ -1,24 +1,45 @@
 #!python3
 import os
+import datetime
 
 # input integers separated by commas
-#start= [int(i) for i in open(os.path.basename(__file__).split(".")[0]+'.input').read().split(",")]
+#input= [int(i) for i in open(os.path.basename(__file__).split(".")[0]+'.input').read().split(",")]
 
 # input complete lines
-#lines = open(os.path.basename(__file__).split(".")[0]+'.input').read().splitlines()
+#input = open(os.path.basename(__file__).split(".")[0]+'.input').read().splitlines()
 
-expenses = [int(x) for x in open(os.path.basename(__file__).split(".")[0]+'.input').read().splitlines()]
-expenses.sort()
+input = [int(x) for x in open(os.path.basename(__file__).split(".")[0]+'.input').read().splitlines()]
+input.sort()
 
-base = index1 = index2 = 0
-while not (expenses[base] + expenses[index1] + expenses[index2] == 2020):
-    index2 += 1
-    if (index2 >= len(expenses)):
+def solve2():
+    base = index1 = index2 = 0
+    while not (input[base] + input[index1] + input[index2] == 2020):
+        index2 += 1
+        if (index2 >= len(input)):
+            index1 += 1
+            index2 = index1
+            if (index1 >= len(input)):
+                base += 1
+                index2 = index1 = base
+
+    print(input[base], input[index1], input[index2], input[base]*input[index1]*input[index2])
+
+def solve1():
+    base = index1 = 0
+    while not (input[base] + input[index1] == 2020):
         index1 += 1
-        index2 = index1
-        if (index1 >= len(expenses)):
+        if (index1 >= len(input)):
             base += 1
-            index2 = index1 = base
+            index1 = base
 
-print(expenses[base], expenses[index1], expenses[index2], expenses[base]*expenses[index1]*expenses[index2])
+    print(input[base], input[index1], input[base]*input[index1])
 
+start = datetime.datetime.now()
+solve1()
+end = datetime.datetime.now()
+print("Tijd voor oplossing 1: ", end-start)
+
+start = datetime.datetime.now()
+solve2()
+end = datetime.datetime.now()
+print("Tijd voor oplossing 2: ", end-start)
