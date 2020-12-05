@@ -31,18 +31,18 @@ import re
 # input complete lines
 input = open(os.path.basename(__file__).split(".")[0]+'.input').read().splitlines()
 def validlength(text):
-    # NOW with extra bugs, works almost always (but the lambda is better...)
     m = re.search("[0-9]{2,3}cm|in", text)
     if m != None:
-        if (((text[-2:] == "cm" and 150<=int(re.search("\A\d+", text).group())<=190)) or 
+        if (((text[-2:] == "cm" and 150<=int(re.search("\A\d+", text).group())<=193)) or 
              (text[-2:] == "in" and 59<=int(re.search("\A\d+", text).group())<=76)): return True
     return False
 
 mandatory = {"byr": lambda x: (len(x) == 4 and (re.match("[0-9]{4}", x)) != None) and 1920 <= int(x) <=2002,
              "iyr": lambda x: (len(x) == 4 and (re.match("[0-9]{4}", x)) != None) and 2010 <= int(x) <=2020, 
              "eyr": lambda x: (len(x) == 4 and (re.match("[0-9]{4}", x)) != None) and 2020 <= int(x) <=2030, 
-             "hgt": lambda x: (x.endswith('cm') and 150 <= int(x[:-2]) <= 193)
-                           or (x.endswith('in') and  59 <= int(x[:-2]) <=  76), 
+#             "hgt": lambda x: (x.endswith('cm') and 150 <= int(x[:-2]) <= 193)
+#                           or (x.endswith('in') and  59 <= int(x[:-2]) <=  76), 
+             "hgt": lambda x: validlength(x), 
              "hcl": lambda x: (len(x) == 7 and (re.match("#[0-9a-f]{6}", x)) != None), 
              "ecl": lambda x: x in ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"], 
              "pid": lambda x: (len(x) == 9 and (re.match("[0-9]{9}", x)) != None )}
@@ -66,7 +66,7 @@ def solve2():
             for key in mandatory:
 #                print(key, p[key], mandatory[key](p[key]))
                 valid = valid and mandatory[key](p[key])
-        print(valid)
+#        print(valid)
         if valid: ok += 1
     print("Aantal goede: ", ok)
 
